@@ -1,0 +1,38 @@
+services:
+  db:
+    container_name: db
+    image: mysql:5.7 #use a versão mysql:8.0
+    network_mode: "host"
+    restart: always
+    environment:
+      MYSQL_DATABASE: "cadastro"
+      MYSQL_USER: "ever"
+      MYSQL_PASSWORD: "1234"
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  app:
+    container_name: "app"
+    build:
+      context: .
+      dockerfile: "DOCKERFILE.dockerfile"
+    network_mode: "host"
+    restart: always
+    environment:
+      USER_API: "admin"
+      PASSWD_API: "admin12345"
+      USER_DB: "ever"
+      PASSWD_DB: "1234"
+      HOST_DB: "localhost"
+      DATABASE: "cadastro"
+      URL_AWS: "https://z5ybj9gdf.execute-api.us-east-1.amazonaws.com"
+      URL_CONTROLADOR: "http://localhost:8080/cgi-bin/recordFinder.cgi"  
+    depends_on:
+     - db  
+
+volumes:
+  db:
+
