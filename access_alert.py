@@ -99,24 +99,27 @@ def send_data(user_db, url_aws):
         else:
              print(f"Erro ao enviar dados: {send.status_code}, {send.text}")
 
-while True:
-    StartTime = int(time.time() - 200000) #tempo inicial da consulta  
-    EndTime = int(time.time() + 200000) #tempo final da consulta
-    user_api = os.getenv("USER_API") 
-    passwd_api = os.getenv("PASSWD_API")
-    params = {
-            "action" : "find",
-            "name" : "AccessControlCardRec",
-            "StartTime" : StartTime,   
-            "EndTime" :  EndTime
-            }
-    #url do controlador de acesso intelbras
-    url = os.getenv("URL_CONTROLADOR") #"http://192.168.1.123:80/cgi-bin/recordFinder.cgi"
-    #url do api_gateway aws
-    url_aws = os.getenv("URL_AWS")
- 
-    id_access = get_id(url, params, user_api, passwd_api)
-    id_previo =  get_last_id() 
-    user_db = get_user_db(id_access, id_previo)
-    send_data(user_db, url_aws)
-    time.sleep(2)
+ if __name__ == __main__:
+         
+    def main():
+        while True:
+            StartTime = int(time.time() - 200000) #tempo inicial da consulta  
+            EndTime = int(time.time() + 200000) #tempo final da consulta
+            user_api = os.getenv("USER_API") 
+            passwd_api = os.getenv("PASSWD_API")
+            params = {
+                    "action" : "find",
+                    "name" : "AccessControlCardRec",
+                    "StartTime" : StartTime,   
+                    "EndTime" :  EndTime
+                    }
+            #url do controlador de acesso intelbras
+            url = os.getenv("URL_CONTROLADOR") #"http://192.168.1.123:80/cgi-bin/recordFinder.cgi"
+            #url do api_gateway aws
+            url_aws = os.getenv("URL_AWS")
+         
+            id_access = get_id(url, params, user_api, passwd_api)
+            id_previo =  get_last_id() 
+            user_db = get_user_db(id_access, id_previo)
+            send_data(user_db, url_aws)
+            time.sleep(2)
