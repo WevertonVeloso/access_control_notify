@@ -123,6 +123,6 @@ def main():
         send_data(user_db, url_aws)
         time.sleep(2)
 
- if __name__ == __main__:
+ if __name__ == "__main__":
      main()
       
