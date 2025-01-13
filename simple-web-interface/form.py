@@ -1,12 +1,13 @@
 import streamlit as st
 import mysql.connector as my
 import time 
+import os
 def db_conn():
     conn = my.connect(
-            host = "10.17.0.10",
-            user = "ever",
-            password = "1234",
-            database = "cadastro"
+             host = os.getenv("HOST_DB"),
+             user = os.getenv("USER_DB"),
+             password = os.getenv("PASSWD_DB"),
+             database = os.getenv("DATABASE")
             )
     
     return conn
