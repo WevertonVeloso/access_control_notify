@@ -83,7 +83,7 @@ with tab2:
        
     if not iduser.isnumeric():
         mensagem = st.empty()
-        mensagem.warning("ID invalido!")
+        mensagem.error("ID invalido!")
         time.sleep(2)
         mensagem.empty()
     else: 
@@ -104,7 +104,7 @@ with tab2:
                  if st.button("ATUALIZAR"):
                      cursor.execute(" update usuarios set nome = %s, telefone = %s, email1 = %s where id = %s",(nome, telefone, email, iduser)) 
                      conn.commit()
-                     st.sucess("Cadastro realizado com sucesso!"
+                     st.success("Cadastro realizado com sucesso!"
 
             except:
                  mensagem = st.empty()
