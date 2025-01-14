@@ -1,13 +1,16 @@
 import streamlit as st
 import mysql.connector as my
 import time 
-import os
+
+nome1 = " "
+phone1 = " "
+email1 = " "
 def db_conn():
     conn = my.connect(
              host = os.getenv("HOST_DB"),
              user = os.getenv("USER_DB"),
              password = os.getenv("PASSWD_DB"),
-             database = os.getenv("DATABASE")
+             database = os.getenv("DATABASE")          
             )
     
     return conn
@@ -46,7 +49,7 @@ def remove(id_user):
 
     conn.close()
 
-tab1, tab2 = st.tabs(["Cadastro", "Listar alunos"])
+tab1, tab2 = st.tabs(["Cadastro", "Atualizar Cadastro"])
 with tab1:
     st.title("Cadastro de alunos")
 
@@ -76,7 +79,37 @@ with tab1:
 
 with tab2:
     st.title("Atualizar cadastro")
-    name = st.text_input("Nome")
-    
-    
+    iduser = st.text_input("ID", placeholder="digite o id do usuario que deseja atualizar")
+       
+    if not iduser.isnumeric():
+        mensagem = st.empty()
+        mensagem.warning("ID invalido!")
+        time.sleep(2)
+        mensagem.empty()
+    else: 
+        conn = db_conn()
+        cursor = conn.cursor()
+        if iduser:
+            try: 
+                 cursor.execute("select nome, telefone, email1 from usuarios where id = %s", (iduser,))
+                 table = cursor.fetchall()
+                 nome1 = table[0][0]
+                 phone1 = table[0][1]
+                 email1 = table[0][2]
 
+                 nome = st.text_input("Nome", value=nome1)
+                 telefone = st.text_input("Telefone", phone1)
+                 email = st.text_input("Email", email1)
+
+                 if st.button("ATUALIZAR"):
+                     cursor.execute(" update usuarios set nome = %s, telefone = %s, email1 = %s where id = %s",(nome, telefone, email, iduser)) 
+                     conn.commit()
+                     st.sucess("Cadastro realizado com sucesso!"
+
+            except:
+                 mensagem = st.empty()
+                 mensagem.warning("ID não encontrado!")
+                 time.sleep(2)
+                 mensagem.empty()
+            finally:
+                conn.close() 
