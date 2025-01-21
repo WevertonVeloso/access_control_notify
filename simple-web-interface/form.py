@@ -34,7 +34,8 @@ def cadastro():
         time.sleep(1)
         msg.empty()
     finally:
-        conn.close()
+        if conn.is_connected():
+            conn.close()
 
 def remove(id_user):
     conn = db_conn()
@@ -112,4 +113,5 @@ with tab2:
                  time.sleep(2)
                  mensagem.empty()
             finally:
-                conn.close() 
+                if conn.is_connected():
+                     conn.close() 
